@@ -42,9 +42,12 @@ class PositionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Position $position)
+    public function show(Position $position): JsonResponse
     {
         //
+        return response()->json([
+            'position' => $position,
+        ], JsonResponse::HTTP_OK);
     }
 
     /**
