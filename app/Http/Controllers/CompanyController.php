@@ -22,9 +22,21 @@ class CompanyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         //
+        $request->validate([
+            'name' => 'required|min:3|max:32',
+        ]);
+
+        $company = new Company();
+        $company->name = $request->name;
+        $company->save();
+
+        return response()->json([
+            'message' => 'Compañía creada exitosamente',
+            'company' => $company,
+        ], JsonResponse::HTTP_CREATED);
     }
 
     /**
