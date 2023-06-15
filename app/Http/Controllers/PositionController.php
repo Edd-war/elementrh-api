@@ -53,9 +53,20 @@ class PositionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Position $position)
+    public function update(Request $request, Position $position): JsonResponse
     {
         //
+        $request->validate([
+            'name' => 'required|min:3|max:32',
+        ]);
+
+        $position->name = $request->name;
+        $position->save();
+
+        return response()->json([
+            'message' => 'Posición actualizada exitosamente',
+            'position' => $position,
+        ], JsonResponse::HTTP_OK);
     }
 
     /**
