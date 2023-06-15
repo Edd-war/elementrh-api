@@ -5,7 +5,7 @@ namespace App\Http\Resources\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class EployeeCollection extends ResourceCollection
+class EmployeeCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
