@@ -72,8 +72,13 @@ class PositionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Position $position)
+    public function destroy(Position $position): JsonResponse
     {
         //
+        $position->delete();
+
+        return response()->json([
+            'message' => 'Posición eliminada exitosamente',
+        ], JsonResponse::HTTP_OK);
     }
 }
