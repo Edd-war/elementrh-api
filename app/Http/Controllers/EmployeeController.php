@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\Employee\EmployeeRequest;
 use App\Http\Resources\Employee\EmployeeCollection;
+use App\Http\Resources\Employee\EmployeeResource;
 
 class EmployeeController extends Controller
 {
@@ -65,9 +66,20 @@ class EmployeeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Employee $employee)
+    public function show(Employee $employee): EmployeeResource
     {
         //
+        try
+        {
+            return new EmployeeResource($employee);
+        }
+        catch (Exception $e)
+        {
+            return response()->json([
+                'message' => 'Error al obtener el empleado',
+                'error' => $e->getMessage(),
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
