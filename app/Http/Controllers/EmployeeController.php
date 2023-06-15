@@ -85,9 +85,30 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Employee $employee)
+    public function update(EmployeeRequest $employeeRequest, Employee $employee): JsonResponse
     {
         //
+        try
+        {
+            $employeeRequest->validated();
+
+            $employee->name = $employeeRequest->name;
+            $employee->company_id = $employeeRequest->company_id;
+            $employee->position_id = $employeeRequest->position_id;
+            $employee->save();
+            
+            return response()->json([
+                'message' => 'Empleado actualizado exitosamente',
+                'employee' => $employee,
+            ], JsonResponse::HTTP_OK);
+        }
+        catch (Exception $e)
+        {
+            return response()->json([
+                'message' => 'Error al actualizar el empleado',
+                'error' => $e->getMessage(),
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
