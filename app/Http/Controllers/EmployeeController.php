@@ -114,8 +114,23 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Employee $employee)
+    public function destroy(Employee $employee): JsonResponse
     {
         //
+        try
+        {
+            $employee->delete();
+            
+            return response()->json([
+                'message' => 'Empleado eliminado exitosamente',
+            ], JsonResponse::HTTP_OK);
+        }
+        catch (Exception $e)
+        {
+            return response()->json([
+                'message' => 'Error al eliminar el empleado',
+                'error' => $e->getMessage(),
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
