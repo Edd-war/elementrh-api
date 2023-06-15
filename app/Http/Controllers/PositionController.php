@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Position;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,9 +15,19 @@ class PositionController extends Controller
     public function index(): JsonResponse
     {
         //
-        return response()->json([
-            'positions' => Position::all(),
-        ], JsonResponse::HTTP_OK);
+        try
+        {
+            return response()->json([
+                'positions' => Position::all(),
+            ], JsonResponse::HTTP_OK);
+        }
+        catch (Exception $e)
+        {
+            return response()->json([
+                'message' => 'Error al obtener las posiciones',
+                'error' => $e->getMessage(),
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -25,18 +36,28 @@ class PositionController extends Controller
     public function store(Request $request): JsonResponse
     {
         //
-        $request->validate([
-            'name' => 'required|min:3|max:32',
-        ]);
-
-        $position = new Position();
-        $position->name = $request->name;
-        $position->save();
-
-        return response()->json([
-            'message' => 'Posición creada exitosamente',
-            'position' => $position,
-        ], JsonResponse::HTTP_CREATED);
+        try
+        {
+            $request->validate([
+                'name' => 'required|min:3|max:32',
+            ]);
+            
+            $position = new Position();
+            $position->name = $request->name;
+            $position->save();
+            
+            return response()->json([
+                'message' => 'Posición creada exitosamente',
+                'position' => $position,
+            ], JsonResponse::HTTP_CREATED);
+        }
+        catch (Exception $e)
+        {
+            return response()->json([
+                'message' => 'Error al crear la posición',
+                'error' => $e->getMessage(),
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -45,9 +66,19 @@ class PositionController extends Controller
     public function show(Position $position): JsonResponse
     {
         //
-        return response()->json([
-            'position' => $position,
-        ], JsonResponse::HTTP_OK);
+        try
+        {
+            return response()->json([
+                'position' => $position,
+            ], JsonResponse::HTTP_OK);
+        }
+        catch (Exception $e)
+        {
+            return response()->json([
+                'message' => 'Error al obtener la posición',
+                'error' => $e->getMessage(),
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -56,17 +87,27 @@ class PositionController extends Controller
     public function update(Request $request, Position $position): JsonResponse
     {
         //
-        $request->validate([
-            'name' => 'required|min:3|max:32',
-        ]);
-
-        $position->name = $request->name;
-        $position->save();
-
-        return response()->json([
-            'message' => 'Posición actualizada exitosamente',
-            'position' => $position,
-        ], JsonResponse::HTTP_OK);
+        try
+        {
+            $request->validate([
+                'name' => 'required|min:3|max:32',
+            ]);
+            
+            $position->name = $request->name;
+            $position->save();
+            
+            return response()->json([
+                'message' => 'Posición actualizada exitosamente',
+                'position' => $position,
+            ], JsonResponse::HTTP_OK);
+        }
+        catch (Exception $e)
+        {
+            return response()->json([
+                'message' => 'Error al actualizar la posición',
+                'error' => $e->getMessage(),
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -75,10 +116,20 @@ class PositionController extends Controller
     public function destroy(Position $position): JsonResponse
     {
         //
-        $position->delete();
-
-        return response()->json([
-            'message' => 'Posición eliminada exitosamente',
-        ], JsonResponse::HTTP_OK);
+        try
+        {
+            $position->delete();
+            
+            return response()->json([
+                'message' => 'Posición eliminada exitosamente',
+            ], JsonResponse::HTTP_OK);
+        }
+        catch (Exception $e)
+        {
+            return response()->json([
+                'message' => 'Error al eliminar la posición',
+                'error' => $e->getMessage(),
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
