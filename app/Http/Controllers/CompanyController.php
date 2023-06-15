@@ -75,5 +75,10 @@ class CompanyController extends Controller
     public function destroy(Company $company)
     {
         //
+        $company->delete();
+
+        return response()->json([
+            'message' => 'Compañía eliminada exitosamente',
+        ], JsonResponse::HTTP_OK);
     }
 }
