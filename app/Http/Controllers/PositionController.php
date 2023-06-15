@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Position;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PositionController extends Controller
@@ -10,9 +11,12 @@ class PositionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         //
+        return response()->json([
+            'positions' => Position::all(),
+        ], JsonResponse::HTTP_OK);
     }
 
     /**
