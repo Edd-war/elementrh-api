@@ -56,6 +56,17 @@ class CompanyController extends Controller
     public function update(Request $request, Company $company)
     {
         //
+        $request->validate([
+            'name' => 'required|min:3|max:32',
+        ]);
+
+        $company->name = $request->name;
+        $company->save();
+
+        return response()->json([
+            'message' => 'Compañía actualizada exitosamente',
+            'company' => $company,
+        ], JsonResponse::HTTP_OK);
     }
 
     /**
