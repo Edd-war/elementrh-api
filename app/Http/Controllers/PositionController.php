@@ -22,9 +22,21 @@ class PositionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         //
+        $request->validate([
+            'name' => 'required|min:3|max:32',
+        ]);
+
+        $position = new Position();
+        $position->name = $request->name;
+        $position->save();
+
+        return response()->json([
+            'message' => 'Posición creada exitosamente',
+            'position' => $position,
+        ], JsonResponse::HTTP_CREATED);
     }
 
     /**
