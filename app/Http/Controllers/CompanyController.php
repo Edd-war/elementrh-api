@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Company;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,9 +15,19 @@ class CompanyController extends Controller
     public function index(): JsonResponse
     {
         //
-        return response()->json([
-            'companies' => Company::all(),
-        ], JsonResponse::HTTP_OK);
+        try
+        {
+            return response()->json([
+                'companies' => Company::all(),
+            ], JsonResponse::HTTP_OK);
+        }
+        catch (Exception $e)
+        {
+            return response()->json([
+                'message' => 'Error al obtener las compañías',
+                'error' => $e->getMessage(),
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -25,18 +36,28 @@ class CompanyController extends Controller
     public function store(Request $request): JsonResponse
     {
         //
-        $request->validate([
-            'name' => 'required|min:3|max:32',
-        ]);
-
-        $company = new Company();
-        $company->name = $request->name;
-        $company->save();
-
-        return response()->json([
-            'message' => 'Compañía creada exitosamente',
-            'company' => $company,
-        ], JsonResponse::HTTP_CREATED);
+        try
+        {
+            $request->validate([
+                'name' => 'required|min:3|max:32',
+            ]);
+            
+            $company = new Company();
+            $company->name = $request->name;
+            $company->save();
+            
+            return response()->json([
+                'message' => 'Compañía creada exitosamente',
+                'company' => $company,
+            ], JsonResponse::HTTP_CREATED);
+        }
+        catch (Exception $e)
+        {
+            return response()->json([
+                'message' => 'Error al crear la compañía',
+                'error' => $e->getMessage(),
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -45,9 +66,19 @@ class CompanyController extends Controller
     public function show(Company $company): JsonResponse
     {
         //
-        return response()->json([
-            'company' => $company,
-        ], JsonResponse::HTTP_OK);
+        try
+        {
+            return response()->json([
+                'company' => $company,
+            ], JsonResponse::HTTP_OK);
+        }
+        catch (Exception $e)
+        {
+            return response()->json([
+                'message' => 'Error al obtener la compañía',
+                'error' => $e->getMessage(),
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -56,17 +87,27 @@ class CompanyController extends Controller
     public function update(Request $request, Company $company)
     {
         //
-        $request->validate([
-            'name' => 'required|min:3|max:32',
-        ]);
-
-        $company->name = $request->name;
-        $company->save();
-
-        return response()->json([
-            'message' => 'Compañía actualizada exitosamente',
-            'company' => $company,
-        ], JsonResponse::HTTP_OK);
+        try
+        {
+            $request->validate([
+                'name' => 'required|min:3|max:32',
+            ]);
+            
+            $company->name = $request->name;
+            $company->save();
+            
+            return response()->json([
+                'message' => 'Compañía actualizada exitosamente',
+                'company' => $company,
+            ], JsonResponse::HTTP_OK);
+        }
+        catch (Exception $e)
+        {
+            return response()->json([
+                'message' => 'Error al actualizar la compañía',
+                'error' => $e->getMessage(),
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -75,10 +116,20 @@ class CompanyController extends Controller
     public function destroy(Company $company)
     {
         //
-        $company->delete();
-
-        return response()->json([
-            'message' => 'Compañía eliminada exitosamente',
-        ], JsonResponse::HTTP_OK);
+        try
+        {
+            $company->delete();
+            
+            return response()->json([
+                'message' => 'Compañía eliminada exitosamente',
+            ], JsonResponse::HTTP_OK);
+        }
+        catch (Exception $e)
+        {
+            return response()->json([
+                'message' => 'Error al eliminar la compañía',
+                'error' => $e->getMessage(),
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
