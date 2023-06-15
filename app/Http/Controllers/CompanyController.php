@@ -42,9 +42,12 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Company $company)
+    public function show(Company $company): JsonResponse
     {
         //
+        return response()->json([
+            'company' => $company,
+        ], JsonResponse::HTTP_OK);
     }
 
     /**
