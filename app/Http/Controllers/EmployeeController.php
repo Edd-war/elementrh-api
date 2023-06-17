@@ -41,10 +41,10 @@ class EmployeeController extends Controller
         //
         try
         {
-            $employeeRequest->validated();
-
             $employee = new Employee();
-            $employee->name = $employeeRequest->name;
+            $employee->first_name = $employeeRequest->first_name;
+            $employee->last_name = $employeeRequest->last_name;
+            $employee->start_date = $employeeRequest->start_date;
             $employee->company_id = $employeeRequest->company_id;
             $employee->position_id = $employeeRequest->position_id;
             $employee->save();
@@ -90,9 +90,9 @@ class EmployeeController extends Controller
         //
         try
         {
-            $employeeRequest->validated();
-
-            $employee->name = $employeeRequest->name;
+            $employee->first_name = $employeeRequest->first_name;
+            $employee->last_name = $employeeRequest->last_name;
+            $employee->start_date = $employeeRequest->start_date;
             $employee->company_id = $employeeRequest->company_id;
             $employee->position_id = $employeeRequest->position_id;
             $employee->save();

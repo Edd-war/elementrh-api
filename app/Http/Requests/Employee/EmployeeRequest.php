@@ -38,7 +38,7 @@ class EmployeeRequest extends FormRequest
         return [
             'first_name' => 'required|string|min:3|max:32',
             'last_name'  => 'required|string|min:3|max:32',
-            'start_date' => 'required|date',
+            'start_date' => 'required|date|date_format:Y-m-d',
             'position_id'=> 'required|integer|exists:positions,id',
             'company_id' => 'required|integer|exists:companies,id',
         ];
@@ -64,6 +64,7 @@ class EmployeeRequest extends FormRequest
 
             'start_date.required' => 'La :attribute es requerida.',
             'start_date.date'     => 'La :attribute debe ser una fecha válida.',
+            'start_date.date_format' => 'La :attribute debe tener el formato YYYY-MM-DD.',
 
             'position_id.required'=> 'La :attribute es requerida.',
             'position_id.integer' => 'La :attribute debe ser un número entero.',
