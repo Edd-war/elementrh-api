@@ -36,12 +36,12 @@ class PositionController extends Controller
     public function store(Request $request): JsonResponse
     {
         //
+        $request->validate([
+            'name' => 'required|min:3|max:32',
+        ]);
+
         try
         {
-            $request->validate([
-                'name' => 'required|min:3|max:32',
-            ]);
-            
             $position = new Position();
             $position->name = $request->name;
             $position->save();
@@ -87,12 +87,12 @@ class PositionController extends Controller
     public function update(Request $request, Position $position): JsonResponse
     {
         //
+        $request->validate([
+            'name' => 'required|min:3|max:32',
+        ]);
+
         try
         {
-            $request->validate([
-                'name' => 'required|min:3|max:32',
-            ]);
-            
             $position->name = $request->name;
             $position->save();
             
