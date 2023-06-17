@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Company\CompanyRequest;
 use Exception;
 use App\Models\Company;
 use Illuminate\Http\JsonResponse;
@@ -33,17 +34,13 @@ class CompanyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): JsonResponse
+    public function store(CompanyRequest $companyRequest): JsonResponse
     {
         //
         try
         {
-            $request->validate([
-                'name' => 'required|min:3|max:32',
-            ]);
-            
             $company = new Company();
-            $company->name = $request->name;
+            $company->name = $companyRequest->name;
             $company->save();
             
             return response()->json([
@@ -84,16 +81,12 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Company $company)
+    public function update(CompanyRequest $companyRequest, Company $company)
     {
         //
         try
         {
-            $request->validate([
-                'name' => 'required|min:3|max:32',
-            ]);
-            
-            $company->name = $request->name;
+            $company->name = $companyRequest->name;
             $company->save();
             
             return response()->json([
